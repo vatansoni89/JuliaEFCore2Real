@@ -3,6 +3,7 @@ using SamuraiApp.Domain;
 using SamuraiApp.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace SomeUI
 {
@@ -35,8 +36,57 @@ namespace SomeUI
             //DeleteWhileNotTracked();
 
             //Delete Multiple records at one shot.
-            DeleteMany();
+            //DeleteMany();
+
+            //Inserting samurai and quote.
+            //InsertNewPkFkGraph();
+
+            AddChildToExistingObjectWhileNotTracked(1);
         }
+
+        //private static void AddChildToExistingObjectWhileNotTracked()
+        //{
+        //    var samurai = _context.Samurais.FirstOrDefault();
+        //    samurai.Quotes.Add(new Quote() { Text = "Quote 101"});
+
+        //    using (var contextt = new SamuraiContext())
+        //    {
+        //        contextt.Samurais.Add(samurai); //: "It will caise error as it dont know from where samurai came (un-tracked.)" 
+        //        contextt.SaveChanges();
+        //    }
+        //}
+
+        private static void AddChildToExistingObjectWhileNotTracked(int samuraiId)
+        {
+            var quote = new Quote()
+            {
+                Text = "Quote 201 ",
+                SamuraiId = samuraiId
+            };
+
+            using (var contextt = new SamuraiContext())
+            {
+                contextt.Quotes.Add(quote);
+                contextt.SaveChanges();
+            }
+        }
+
+        private static void InsertNewPkFkGraph()
+        {
+            var samurai = new Samurai
+            {
+                Name = "Samurai with quote 1",
+                Quotes = new List<Quote>
+                        {
+                            new Quote{Text = "Quote1" }
+                        }
+            };
+
+            _context.Samurais.Add(samurai);
+            _context.SaveChanges();
+        }
+
+        
 
         private static void DeleteMany()
         {
