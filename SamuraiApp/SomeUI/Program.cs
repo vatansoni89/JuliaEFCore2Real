@@ -32,7 +32,18 @@ namespace SomeUI
             //Delete is Remove 
             //DeleteWhileTracked();
 
-            DeleteWhileNotTracked();
+            //DeleteWhileNotTracked();
+
+            //Delete Multiple records at one shot.
+            DeleteMany();
+        }
+
+        private static void DeleteMany()
+        {
+            var samuraies = _context.Samurais.Where(x => EF.Functions.Like(x.Name, "Babu%"));
+
+            _context.Samurais.RemoveRange(samuraies);
+            _context.SaveChanges();
         }
 
         private static void AddBattle()
